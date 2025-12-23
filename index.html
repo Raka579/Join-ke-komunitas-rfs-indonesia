@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta property="og:title" content="Komunitas flight simulator">
 <meta property="og:description" content="Bergabunglah bersama kami. Proses cepat, mudah, dan aman.">
-<meta property="og:image" content="link-foto-logo-anda.jpg">
+<meta property="og:image" content="logo.jpg">
 <meta property="og:type" content="website">
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
 
@@ -460,11 +460,15 @@ body.light-theme #offline-screen .footer {
       <rect y="60" width="100" height="15"></rect>
     </svg>
   </button>
-
+ <nav id="navMenu" class="nav-menu">
+    <a href="#keterangan">Keterangan</a>
+    <a href="#aturan">Aturan</a>
+    <a href="#form">Form Pendaftaran</a>
+  </nav>
 </header>
             <br><br>
  <div class="group-name-bg"><br><br>
-    <h2 class="group-name"></h2>
+    <h2 style="font-size:23px;" class="group-name"></h2>
             <p style="text-align:center;">Komunitas Flight Simulator Indonesia<br><b>Real Flight Simulator (RFS)</b></p></div>
 <div class="container">
     <div id="main-content">
@@ -490,11 +494,7 @@ body.light-theme #offline-screen .footer {
 
         </div>
 </div>
-  <nav id="navMenu" class="nav-menu">
-    <a href="#keterangan">Keterangan</a>
-    <a href="#aturan">Aturan</a>
-    <a href="#form">Form Pendaftaran</a>
-  </nav>
+ 
    <div class="card" id="keterangan">
     <h3>📌 Mengenal <span class="group-name"></span></h3>
     <p style="text-align: center; opacity: 0.9; line-height: 1.6;">
@@ -573,7 +573,7 @@ Website ini bersifat komunitas dan tidak berafiliasi dengan pihak resmi pengemba
     </ul>
     </div>
 
-
+<br><br>
         <div id="form-section" class="hidden fade-in">    
     <div class="card">
       <h3 id="form">✈️ Form Pendaftaran</h3>
@@ -710,6 +710,27 @@ Pendaftar di bawah usia tertentu memerlukan pengawasan orang tua.
 
 
 <script>
+    // Menangkap semua error di halaman secara otomatis
+window.onerror = function(message, source, lineno, colno, error) {
+    const loadingScreen = document.getElementById("loading-screen");
+    const loadingText = document.getElementById("loading-text");
+    const retryBtn = document.getElementById("retry-btn");
+
+    if (loadingScreen) {
+        loadingScreen.style.display = "flex";
+        loadingScreen.style.opacity = "1";
+        loadingText.innerHTML = `
+            <b style="color: #ff4d4d; font-size: 16px;">⚠️ SISTEM MENGALAMI GANGGUAN</b><br>
+            <small style="color: #bbb;">Error: ${message}</small><br>
+            <span style="font-size: 12px; margin-top:10px; display:block;">Coba segarkan halaman atau hubungi admin.</span>
+        `;
+        if (retryBtn) retryBtn.style.display = "block";
+    }
+    
+    // Mengembalikan false agar error tetap tercatat di console log untuk pengecekan dev
+    return false;
+};
+
 document.getElementById("lastUpdate").textContent =
     new Date().toLocaleString("id-ID");
 document.body.style.overflow = "hidden";
@@ -820,7 +841,7 @@ fetch("group.json?ts=" + Date.now())
                 modal.style.display = "none";
                 document.body.style.overflow = "auto";
                 resolve(jawaban);
-            };
+            }
         });
     }
 
@@ -831,48 +852,60 @@ fetch("group.json?ts=" + Date.now())
     }
 
     async function proses() {
-        const errorDiv = document.getElementById("formError");
+    const errorDiv = document.getElementById("formError");
+    errorDiv.innerHTML = ""; 
+    
+try {
+        // Bersihkan pesan error sebelumnya
         errorDiv.innerHTML = ""; 
-
-        const nama = document.getElementById("nama").value.trim();
-        const wa = document.getElementById("wa").value.trim();
-        const umur = document.getElementById("umur").value.trim();
-        const alasan = document.getElementById("alasan").value.trim();
-        const tiktok = document.getElementById("tiktok").value.trim();
-        const vKelas = document.getElementById("kelas").value;
-        const vFollower = document.getElementById("follower").value;
-        const vProvinsi = document.getElementById("provinsi").value;
-        const vKota = document.getElementById("kota").value;
-        const vPlanet = document.getElementById("planet").value;
-        const vGalaxy = document.getElementById("galaxy").value;
         
-        if (!nama || !wa || !umur || !alasan) {
-            errorDiv.innerHTML = "❗ Lengkapi data wajib (Nama, WA, Umur, Alasan)";
-            return;
-        }
+    // Ambil semua value dan bersihkan spasi
+    const nama = document.getElementById("nama").value.trim();
+    const wa = document.getElementById("wa").value.trim();
+    const umur = document.getElementById("umur").value.trim();
+    const alasan = document.getElementById("alasan").value.trim();
+    const tiktok = document.getElementById("tiktok").value.trim();
+    const vKelas = document.getElementById("kelas").value.trim();
+    const vFollower = document.getElementById("follower").value.trim();
+    const vProvinsi = document.getElementById("provinsi").value.trim();
+    const vKota = document.getElementById("kota").value.trim();
+    const vPlanet = document.getElementById("planet").value.trim();
+    const vGalaxy = document.getElementById("galaxy").value.trim();
 
-        let nomor = wa.replace(/\D/g, "");
-        if (nomor.startsWith("08")) nomor = "62" + nomor.substring(1);
-        if (nomor.length < 10 || nomor.length > 15) {
-            errorDiv.innerHTML = "❗ Nomor WhatsApp tidak valid";
-            return;
-        }
+    if (nama.length < 3 || !/^[a-zA-Z\s]+$/.test(nama)) {
+        errorDiv.innerHTML = "❗ Nama harus berupa huruf dan minimal 3 karakter.";
+        return;
+    }
 
-        if (tiktok && !/^@[a-zA-Z0-9._]{3,30}$/.test(tiktok)) {
-            errorDiv.innerHTML = "❗ Akun TikTok tidak valid. Gunakan format @username";
-            return;
-        }
+    let nomor = wa.replace(/\D/g, "");
+    if (nomor.startsWith("08")) nomor = "62" + nomor.substring(1);
+    const angkaKembar = /^(.)\1+$/;
+    if (nomor.length < 10 || nomor.length > 15 || angkaKembar.test(nomor.substring(2))) {
+        errorDiv.innerHTML = "❗ Nomor WhatsApp tidak valid atau terlihat palsu.";
+        return;
+    }
 
-        if (parseInt(umur) < 5 || parseInt(umur) > 100) {
-            errorDiv.innerHTML = "❗ Umur harus antara 5 hingga 100 tahun";
-            return;
-        }
+    const nUmur = parseInt(umur);
+    if (isNaN(nUmur) || nUmur < 7 || nUmur > 80) {
+        errorDiv.innerHTML = "❗ Masukkan umur yang valid (7-80 tahun).";
+        return;
+    }
 
-        let waSimpan = localStorage.getItem("rfs_wa");
-        if (waSimpan === nomor) {
-            const setuju = await tanyaUser(); 
-            if (!setuju) return;
-        }
+    if (alasan.length < 15 || /^[^a-zA-Z0-9]+$/.test(alasan)) {
+        errorDiv.innerHTML = "❗ Alasan terlalu singkat. Jelaskan minimal 15 karakter.";
+        return;
+    }
+
+    if (tiktok && !/^@[a-zA-Z0-9._]{3,30}$/.test(tiktok)) {
+        errorDiv.innerHTML = "❗ Format TikTok salah. Gunakan @username";
+        return;
+    }
+
+    let waSimpan = localStorage.getItem("rfs_wa");
+    if (waSimpan === nomor) {
+        const setuju = await tanyaUser();
+        if (!setuju) return;
+    }
 
         localStorage.setItem("rfs_wa", nomor);
 
@@ -923,19 +956,39 @@ ALASAN    : ${alasan}
     </button>
 </div>`;
 
-        // Render ulang reCAPTCHA secara manual karena elemennya baru dibuat via innerHTML
+     
         setTimeout(() => {
             grecaptcha.render('captcha-preview', {
                 'sitekey': '6LducjIsAAAAANGxKlq05dgfptsMPherCbqQLZGZ',
                 'theme': localStorage.getItem("theme") === "light" ? 'light' : 'dark'
             });
         }, 100);
-
-        // SEMBUNYIKAN HALAMAN UTAMA, TAMPILKAN PREVIEW
         document.getElementById("main-content").style.display = "none";
-        document.getElementById("step-preview").style.display = "block";
-        window.scrollTo(0, 0);
+        document.getElementById("form-section").style.display = "none";
+    
+        const extraCards = document.querySelectorAll('#keterangan, #aturan, #hero-section');
+        extraCards.forEach(card => card.style.display = "none");
+
+        const stepPreview = document.getElementById("step-preview");
+        stepPreview.style.display = "block";
+        stepPreview.classList.add("fade-in");
+
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    } catch (err) {
+        // Jika ada error di dalam fungsi ini, panggil peringatan
+        tampilkanPeringatanSistem(err.message);
     }
+}
+
+// Fungsi pembantu agar kode lebih rapi
+function tampilkanPeringatanSistem(pesan) {
+    const loadingScreen = document.getElementById("loading-screen");
+    document.getElementById("loading-text").innerHTML = `
+        <b style="color: #ff4d4d;">⚠️ PERINGATAN</b><br>${pesan}
+    `;
+    document.getElementById("retry-btn").style.display = "block";
+    loadingScreen.style.display = "flex";
+}
     
     function toggleKirimBtn() {
         const checkbox = document.getElementById("setujuSyarat");
@@ -959,7 +1012,7 @@ ALASAN    : ${alasan}
     const captchaError = document.getElementById("captchaError");
 
     if (!checkbox || !checkbox.checked) {
-        alert("Harap centang persetujuan syarat & ketentuan.");
+        
         return;
     }
 
@@ -971,7 +1024,7 @@ ALASAN    : ${alasan}
     const lastSubmit = localStorage.getItem("lastSubmitTime");
     const now = Date.now();
     if (lastSubmit && now - lastSubmit < 60000) {
-        alert("⏳ Tunggu 1 menit sebelum mengirim ulang.");
+        
         return;
     }
     localStorage.setItem("lastSubmitTime", now);
@@ -1036,22 +1089,34 @@ cekKoneksi();
 
 
 function bukaForm() {
+    // Sembunyikan bagian beranda
     document.getElementById("hero-section").classList.add("hidden");
-    const berandaCards = document.querySelectorAll('#keterangan, #aturan');
-    berandaCards.forEach(card => card.classList.add("hidden"));
+    document.querySelectorAll('#keterangan, #aturan').forEach(card => card.classList.add("hidden"));
+    
+    // Tampilkan form
     const formSection = document.getElementById("form-section");
     formSection.classList.remove("hidden");
-    const innerCard = formSection.querySelector('.card');
-    if (innerCard) {
-        innerCard.classList.remove("hidden");
-    }
+    formSection.style.display = "block"; // Pastikan display aktif
+    
     window.scrollTo(0, 0);
 }
 
 function kembaliKeForm() {
     document.getElementById("step-preview").style.display = "none";
+    const formSection = document.getElementById("form-section");
+    formSection.classList.remove("hidden");
+    formSection.style.display = "block";
     document.getElementById("main-content").style.display = "block";
-    bukaForm();
+    window.scrollTo(0, 0);
+}
+
+function kembaliKeBeranda() {
+    document.getElementById("hero-section").classList.remove("hidden");
+    document.querySelectorAll('#keterangan, #aturan').forEach(card => card.classList.remove("hidden"));
+    document.getElementById("form-section").classList.add("hidden");
+    document.getElementById("step-preview").style.display = "none";
+    document.getElementById("main-content").style.display = "block";
+    window.scrollTo(0, 0);
 }
 
 </script>​​
