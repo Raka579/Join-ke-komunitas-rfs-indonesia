@@ -728,8 +728,7 @@ Pendaftar di bawah usia tertentu memerlukan pengawasan orang tua.
 
 
 <script>
-    // Menangkap semua error di halaman secara otomatis
-window.onerror = function(message, source, lineno, colno, error) {
+    window.onerror = function(message, source, lineno, colno, error) {
     const loadingScreen = document.getElementById("loading-screen");
     const loadingText = document.getElementById("loading-text");
     const retryBtn = document.getElementById("retry-btn");
@@ -737,16 +736,30 @@ window.onerror = function(message, source, lineno, colno, error) {
     if (loadingScreen) {
         loadingScreen.style.display = "flex";
         loadingScreen.style.opacity = "1";
+
         loadingText.innerHTML = `
             <b style="color: #ff4d4d; font-size: 16px;">⚠️ SISTEM MENGALAMI GANGGUAN</b><br>
             <small style="color: #bbb;">Error: ${message}</small><br>
-            <span style="font-size: 12px; margin-top:10px; display:block;">Coba segarkan halaman atau hubungi admin.</span>
+            <span style="font-size: 12px; margin-top:10px; display:block;">
+                Coba segarkan halaman atau hubungi admin.
+            </span>
         `;
+
         if (retryBtn) retryBtn.style.display = "block";
     }
-    
-    // Mengembalikan false agar error tetap tercatat di console log untuk pengecekan dev
-    return false;
+
+    // 🔥 LOCK TOTAL SYSTEM
+    document.body.style.pointerEvents = "none";
+    document.body.style.userSelect = "none";
+
+    document.querySelectorAll("button, input, textarea").forEach(el => {
+        el.disabled = true;
+    });
+
+    // optional: stop scroll
+    document.body.style.overflow = "hidden";
+
+    return true; // lebih aman untuk stop bubbling
 };
 
 document.getElementById("lastUpdate").textContent =
