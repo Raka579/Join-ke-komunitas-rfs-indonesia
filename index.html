@@ -467,11 +467,11 @@ h2 {
 
 <header>
  <div class="header-bar">
-  <button class="btn" style="width: auto; margin: 0; padding: 5px 15px;" onclick="toggleTheme()">
+  <button class="btn" style="width: auto; margin: 0; padding: 5px 10px;" onclick="toggleTheme()">
     🌓 Ganti Tema
   </button>
   <button class="hamburger" onclick="toggleMenu()">
-    <svg width="30" height="30" viewBox="0 0 100 80" fill="white">
+    <svg width="20" height="20" viewBox="0 0 100 80" fill="white">
       <rect width="100" height="15"></rect>
       <rect y="30" width="100" height="15"></rect>
       <rect y="60" width="100" height="15"></rect>
@@ -485,7 +485,7 @@ h2 {
 </header>
             <br><br>
  <div class="group-name-bg"><br><br>
-    <h2 style="font-size:23px;" class="group-name"></h2>
+    <h1 style="font-size:23px;" class="group-name"></h1>
             <p style="text-align:center;">Komunitas Flight Simulator Indonesia<br><b>Real Flight Simulator</b></p></div>
 <div class="container">
     <div id="main-content">
@@ -505,16 +505,13 @@ h2 {
             
             <div class="card" id="form">
                 <p>Selamat datang! Belum mendaftar? Ayo daftar sekarang juga!</p>
-                <button class="btn" onclick="bukaForm()" style="font-size: 18px; padding: 15px;">DAFTAR SEKARANG</button>
+                <button class="btn" onclick="bukaForm()" style="font-size: 14px; padding: 15px;">DAFTAR SEKARANG</button>
             </div>
 
         </div>
 </div>
  
-<div id="uiZoomPanel">
-  <input type="range" min="12" max="30" value="16" id="fontSlider">
-  <span id="fontValue">16px</span>
-</div>
+
     
    <div class="card" id="keterangan">
     <h3>📌 Mengenal <span class="group-name"></span></h3>
@@ -1124,34 +1121,7 @@ function kembaliKeBeranda() {
     document.getElementById("main-content").style.display = "block";
     window.scrollTo(0, 0);
 }
-const slider = document.getElementById("fontSlider");
-const value = document.getElementById("fontValue");
 
-
-function applyFont(size) {
-    document.documentElement.style.fontSize = size + "px";
-    value.textContent = size + "px";
-}
-
-
-slider.addEventListener("input", function () {
-    const size = this.value;
-
-    applyFont(size);
-    localStorage.setItem("fontSize", size);
-});
-
-
-window.addEventListener("load", () => {
-    const saved = localStorage.getItem("fontSize");
-
-    if (saved) {
-        slider.value = saved;
-        applyFont(saved);
-    } else {
-        applyFont(slider.value);
-    }
-});
 </script>​​
 
 </body>​​
