@@ -443,6 +443,17 @@ body.light-theme #offline-screen .footer {
     font-weight: 600;
     letter-spacing: 1.2px;
 }
+    p {
+    font-size: 0.9rem;
+}
+
+h1 {
+    font-size: 1.8rem;
+}
+
+h2 {
+    font-size: 1.4rem;
+}
 </style>
 </head>
 
@@ -1107,13 +1118,18 @@ const value = document.getElementById("fontValue");
 
 slider.addEventListener("input", function () {
     const size = this.value;
-    document.body.style.fontSize = size + "px";
+
+    document.documentElement.style.fontSize = size + "px";
+    value.textContent = size + "px";
+
     localStorage.setItem("fontSize", size);
 });
+
 window.onload = () => {
     const saved = localStorage.getItem("fontSize");
+
     if (saved) {
-        document.body.style.fontSize = saved + "px";
+        document.documentElement.style.fontSize = saved + "px";
         slider.value = saved;
         value.textContent = saved + "px";
     }
