@@ -728,39 +728,56 @@ Pendaftar di bawah usia tertentu memerlukan pengawasan orang tua.
 
 
 <script>
+    let SYSTEM_CRASH = false;
+let INTERVALS = [];
+let TIMEOUTS = [];
     window.onerror = function(message, source, lineno, colno, error) {
+
+    // 🔥 1. FLAG CRASH
+    SYSTEM_CRASH = true;
+
+    // 🔥 2. STOP ALL TIMERS
+    INTERVALS.forEach(id => clearInterval(id));
+    TIMEOUTS.forEach(id => clearTimeout(id));
+
+    // 🔥 3. SHOW LOADING SCREEN
     const loadingScreen = document.getElementById("loading-screen");
     const loadingText = document.getElementById("loading-text");
     const retryBtn = document.getElementById("retry-btn");
-    SYSTEM_CRASH = true; // 🔥 STOP SEMUA LOGIC
 
     if (loadingScreen) {
         loadingScreen.style.display = "flex";
         loadingScreen.style.opacity = "1";
 
         loadingText.innerHTML = `
-            <b style="color: #ff4d4d; font-size: 16px;">⚠️ SISTEM MENGALAMI GANGGUAN</b><br>
-            <small style="color: #bbb;">Error: ${message}</small><br>
-            <span style="font-size: 12px; margin-top:10px; display:block;">
-                Coba segarkan halaman atau hubungi admin.
+            <b style="color:#ff4d4d;font-size:16px;">
+                ⚠️ SISTEM MENGALAMI GANGGUAN
+            </b><br>
+            <small style="color:#bbb;">
+                Error: ${message}
+            </small><br>
+            <span style="font-size:12px;display:block;margin-top:10px;">
+                Silakan refresh atau hubungi admin.
             </span>
         `;
 
         if (retryBtn) retryBtn.style.display = "block";
     }
 
-    // 🔥 LOCK TOTAL SYSTEM
+    // 🔥 4. LOCK UI TOTAL
     document.body.style.pointerEvents = "none";
     document.body.style.userSelect = "none";
+    document.body.style.overflow = "hidden";
 
-    document.querySelectorAll("button, input, textarea").forEach(el => {
+    document.querySelectorAll("button, input, textarea, a").forEach(el => {
         el.disabled = true;
     });
 
-    // optional: stop scroll
-    document.body.style.overflow = "hidden";
+    // 🔥 5. STOP ANIMASI CSS (OPTIONAL)
+    document.body.style.animationPlayState = "paused";
 
-    return true; // lebih aman untuk stop bubbling
+    // 🔥 6. RETURN TRUE (stop default error)
+    return true;
 };
 
 document.getElementById("lastUpdate").textContent =
@@ -844,10 +861,17 @@ Promise.all([
         showSlides();
     }
 
-    setInterval(() => {
-        slideIndex++;
-        showSlides();
-    }, 5000);
+    function safeSetInterval(fn, time) {
+    const id = setInterval(fn, time);
+    INTERVALS.push(id);
+    return id;
+}
+
+function safeSetTimeout(fn, time) {
+    const id = setTimeout(fn, time);
+    TIMEOUTS.push(id);
+    return id;
+}
     
     function tanyaUser() {
         return new Promise((resolve) => {
