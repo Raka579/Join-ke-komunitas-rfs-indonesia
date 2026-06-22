@@ -469,7 +469,7 @@ body.light-theme #offline-screen .footer {
             <br><br>
  <div class="group-name-bg"><br><br>
     <h2 style="font-size:23px;" class="group-name"></h2>
-            <p style="text-align:center;">Komunitas Flight Simulator Indonesia<br><b>Real Flight Simulator</RFS></b></p></div>
+            <p style="text-align:center;">Komunitas Flight Simulator Indonesia<br><b>Real Flight Simulator (rfs)</RFS></b></p></div>
 <div class="container">
     <div id="main-content">
         <div id="hero-section" class="fade-in" style="text-align: center; padding: 40px 10px;">
@@ -1011,15 +1011,18 @@ function tampilkanPeringatanSistem(pesan) {
         return;
     }
     localStorage.setItem("lastSubmitTime", now);
-    fetch("get_admin.php")
+   fetch("get_admin.php")
   .then(async r => {
       console.log("STATUS:", r.status);
+
       const text = await r.text();
       console.log("RAW RESPONSE:", text);
+
       return JSON.parse(text);
   })
   .then(data => {
       console.log("ADMIN:", data);
+
       window.open(
           `https://wa.me/${data.admin}?text=${pesanTerencode}`,
           "_blank"
@@ -1028,9 +1031,9 @@ function tampilkanPeringatanSistem(pesan) {
   .catch(err => {
       console.error("ERROR FETCH:", err);
       alert("ERROR: " + err.message);
-      debug("STATUS: " + r.status);
-debug("RAW: " + text);
-debug("ADMIN: " + JSON.stringify(data));
+
+      debug("❌ FETCH ERROR");
+      debug(err.message);
   });
 }
 function debug(msg) {
