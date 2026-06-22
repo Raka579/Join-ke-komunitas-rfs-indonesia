@@ -469,7 +469,7 @@ body.light-theme #offline-screen .footer {
             <br><br>
  <div class="group-name-bg"><br><br>
     <h2 style="font-size:23px;" class="group-name"></h2>
-            <p style="text-align:center;">Komunitas Flight Simulator Indonesia<br><b>Real Flight Simulator</b></p></div>
+            <p style="text-align:center;">Komunitas Flight Simulator Indonesia<br><b>Real Flight Simulator (RFS) </RFS></b></p></div>
 <div class="container">
     <div id="main-content">
         <div id="hero-section" class="fade-in" style="text-align: center; padding: 40px 10px;">
@@ -1024,7 +1024,7 @@ function tampilkanPeringatanSistem(pesan) {
   })
   .catch(err => {
       console.error("ERROR FETCH:", err);
-      alert("Gagal mengambil nomor admin. Cek console");
+      alert("ERROR: " + err.message);
   });
 }
 
