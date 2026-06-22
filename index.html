@@ -511,20 +511,9 @@ h2 {
         </div>
 </div>
  
-<div style="position:fixed;bottom:10px;right:10px;
-background:#111;padding:10px;border-radius:10px;
-z-index:99999;color:white;font-size:12px;">
-
-  <div>Zoom UI: <span id="fontValue">16px</span></div>
-
-  <input 
-    type="range" 
-    id="fontSlider" 
-    min="12" 
-    max="24" 
-    value="16"
-  >
-</div>
+<br>
+ <input type="range" min="12" max="30" value="16" id="fontSlider">
+<span id="fontValue">16px</span> <br>
     
    <div class="card" id="keterangan">
     <h3>📌 Mengenal <span class="group-name"></span></h3>
@@ -775,6 +764,7 @@ function hideLoading() {
 
 function showLoadingError() {
     document.getElementById("loading-text").innerHTML = "Gagal memuat halaman, coba lagi nanti <br> CODE ERROR: 500  ";
+    
     document.getElementById("loading-text").style.color = "#ff6b6b";
     document.querySelector(".loader").style.display = "none";
     document.getElementById("retry-btn").style.display = "block";
@@ -1023,7 +1013,7 @@ function tampilkanPeringatanSistem(pesan) {
     const captchaError = document.getElementById("captchaError");
 
     if (!checkbox || !checkbox.checked) {
-        captchaError.innerHTML = "❗ Kamu harus menyetujui syarat & ketentuan dulu.";
+        captchaError.innerHTML = "❗ Anda harus menyetujui syarat & ketentuan dulu.";
         return;
     }
 
