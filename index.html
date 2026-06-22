@@ -728,57 +728,28 @@ Pendaftar di bawah usia tertentu memerlukan pengawasan orang tua.
 
 
 <script>
-    let SYSTEM_CRASH = false;
-let INTERVALS = [];
-let TIMEOUTS = [];
     window.onerror = function(message, source, lineno, colno, error) {
+const loadingScreen = document.getElementById("loading-screen");
+const loadingText = document.getElementById("loading-text");
+const retryBtn = document.getElementById("retry-btn");
 
-    // 🔥 1. FLAG CRASH
-    SYSTEM_CRASH = true;
+if (loadingScreen) {  
+    loadingScreen.style.display = "flex";  
+    loadingScreen.style.opacity = "1";  
+    loadingText.innerHTML = `  
+        <b style="color: #ff4d4d; font-size: 16px;">⚠️ SISTEM MENGALAMI GANGGUAN</b><br>  
+        <small style="color: #bbb;">Error: ${message}</small><br>  
+        <span style="font-size: 12px; margin-top:10px; display:block;">Coba segarkan halaman atau hubungi admin.</span>  
+    `;  
+    if (retryBtn) retryBtn.style.display = "block";  
+}  
+  
+// Mengembalikan false agar error tetap tercatat di console log untuk pengecekan dev  
+return false;
 
-    // 🔥 2. STOP ALL TIMERS
-    INTERVALS.forEach(id => clearInterval(id));
-    TIMEOUTS.forEach(id => clearTimeout(id));
-
-    // 🔥 3. SHOW LOADING SCREEN
-    const loadingScreen = document.getElementById("loading-screen");
-    const loadingText = document.getElementById("loading-text");
-    const retryBtn = document.getElementById("retry-btn");
-
-    if (loadingScreen) {
-        loadingScreen.style.display = "flex";
-        loadingScreen.style.opacity = "1";
-
-        loadingText.innerHTML = `
-            <b style="color:#ff4d4d;font-size:16px;">
-                ⚠️ SISTEM MENGALAMI GANGGUAN
-            </b><br>
-            <small style="color:#bbb;">
-                Error: ${message}
-            </small><br>
-            <span style="font-size:12px;display:block;margin-top:10px;">
-                Silakan refresh atau hubungi admin.
-            </span>
-        `;
-
-        if (retryBtn) retryBtn.style.display = "block";
-    }
-
-    // 🔥 4. LOCK UI TOTAL
-    document.body.style.pointerEvents = "none";
-    document.body.style.userSelect = "none";
-    document.body.style.overflow = "hidden";
-
-    document.querySelectorAll("button, input, textarea, a").forEach(el => {
-        el.disabled = true;
-    });
-
-    // 🔥 5. STOP ANIMASI CSS (OPTIONAL)
-    document.body.style.animationPlayState = "paused";
-
-    // 🔥 6. RETURN TRUE (stop default error)
-    return true;
 };
+
+
 
 document.getElementById("lastUpdate").textContent =
     new Date().toLocaleString("id-ID");
@@ -861,17 +832,10 @@ Promise.all([
         showSlides();
     }
 
-    function safeSetInterval(fn, time) {
-    const id = setInterval(fn, time);
-    INTERVALS.push(id);
-    return id;
-}
-
-function safeSetTimeout(fn, time) {
-    const id = setTimeout(fn, time);
-    TIMEOUTS.push(id);
-    return id;
-}
+    setInterval(() => {
+        slideIndex++;
+        showSlides();
+    }, 5000);
     
     function tanyaUser() {
         return new Promise((resolve) => {
