@@ -697,7 +697,7 @@ Pendaftar di bawah usia tertentu memerlukan pengawasan orang tua.
     </div>
 
     <div style="margin-top: 6px; font-size: 11px; opacity: 0.5;">
-        System Version: v1.0.0 • Status: Online
+        System Version: v1.1.4 • Status: Online
     </div>
 
     <div style="margin-top: 6px; font-size: 11px; opacity: 0.6;">
@@ -743,9 +743,7 @@ if (loadingScreen) {
     `;  
     if (retryBtn) retryBtn.style.display = "block";  
 }  
-  
-// Mengembalikan false agar error tetap tercatat di console log untuk pengecekan dev  
-return false;
+  return false;
 
 };
 
@@ -857,10 +855,9 @@ Promise.all([
     errorDiv.innerHTML = ""; 
     
 try {
-        // Bersihkan pesan error sebelumnya
+
         errorDiv.innerHTML = ""; 
-        
-    // Ambil semua value dan bersihkan spasi
+    
     const nama = document.getElementById("nama").value.trim();
     const wa = document.getElementById("wa").value.trim();
     const umur = document.getElementById("umur").value.trim();
@@ -913,7 +910,7 @@ try {
         const idMember = "RFS_I-" + new Date().toISOString().slice(0, 10).replace(/-/g, "") + "-" + Math.floor(100 + Math.random() * 900);
            const GROUP_CLEAN = GROUP_NAME_DYNAMIC.replace(/([\u2700-\u27BF]|[\uE000-\uF8FF]|\uD83C[\uDC00-\uDFFF]|\uD83D[\uDC00-\uDFFF]|[\u2011-\u26FF]|\uD83E[\uDD10-\uDDFF])/g, '').trim();
 
-    // 2. Gunakan GROUP_CLEAN di dalam variabel pesan
+
     const pesan = `PENDAFTARAN ${GROUP_CLEAN}
 
 STATUS    : MENUNGGU PERSETUJUAN ADMIN
@@ -976,12 +973,10 @@ ALASAN    : ${alasan}
 
         window.scrollTo({ top: 0, behavior: 'smooth' });
     } catch (err) {
-        // Jika ada error di dalam fungsi ini, panggil peringatan
-        tampilkanPeringatanSistem(err.message);
+           tampilkanPeringatanSistem(err.message);
     }
 }
 
-// Fungsi pembantu agar kode lebih rapi
 function tampilkanPeringatanSistem(pesan) {
     const loadingScreen = document.getElementById("loading-screen");
     document.getElementById("loading-text").innerHTML = `
@@ -1084,14 +1079,12 @@ cekKoneksi();
 
 
 function bukaForm() {
-    // Sembunyikan bagian beranda
     document.getElementById("hero-section").classList.add("hidden");
     document.querySelectorAll('#keterangan, #aturan').forEach(card => card.classList.add("hidden"));
-    
-    // Tampilkan form
+
     const formSection = document.getElementById("form-section");
     formSection.classList.remove("hidden");
-    formSection.style.display = "block"; // Pastikan display aktif
+    formSection.style.display = "block"; 
     
     window.scrollTo(0, 0);
 }
