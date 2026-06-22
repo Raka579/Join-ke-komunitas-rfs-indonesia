@@ -83,18 +83,19 @@ body.light-theme .nav-menu a:hover {
 
 .card {
     background: #111;
-    border-radius: 12px;
-    padding: 20px;
-    margin-top: 25px;
-    box-shadow: 0 0 15px rgba(0,150,255,0.3);
+    border-radius: 0.8rem;
+    padding: 1.2rem;
+    margin-top: 1.5rem;
+    box-shadow: 0 0 1rem rgba(0,150,255,0.3);
 }
+
 .btn {
     width: 100%;
     background: #1e90ff;
-    padding: 12px;
+    padding: 0.8rem;
     color: white;
-    border-radius: 8px;
-    margin-top: 20px;
+    border-radius: 0.6rem;
+    margin-top: 1.2rem;
     font-weight: bold;
     cursor: pointer;
     border: none;
@@ -454,6 +455,11 @@ h1 {
 h2 {
     font-size: 1.4rem;
 }
+    html {
+    font-size: 16px;
+}
+
+
 </style>
 </head>
 
@@ -505,8 +511,20 @@ h2 {
         </div>
 </div>
  
- <input type="range" min="12" max="30" value="16" id="fontSlider">
-<span id="fontValue">16px</span> 
+<div style="position:fixed;bottom:10px;right:10px;
+background:#111;padding:10px;border-radius:10px;
+z-index:99999;color:white;font-size:12px;">
+
+  <div>Zoom UI: <span id="fontValue">16px</span></div>
+
+  <input 
+    type="range" 
+    id="fontSlider" 
+    min="12" 
+    max="24" 
+    value="16"
+  >
+</div>
     
    <div class="card" id="keterangan">
     <h3>📌 Mengenal <span class="group-name"></span></h3>
@@ -1116,24 +1134,31 @@ function kembaliKeBeranda() {
 const slider = document.getElementById("fontSlider");
 const value = document.getElementById("fontValue");
 
+
+function applyFont(size) {
+    document.documentElement.style.fontSize = size + "px";
+    value.textContent = size + "px";
+}
+
+
 slider.addEventListener("input", function () {
     const size = this.value;
 
-    document.documentElement.style.fontSize = size + "px";
-    value.textContent = size + "px";
-
+    applyFont(size);
     localStorage.setItem("fontSize", size);
 });
 
-window.onload = () => {
+
+window.addEventListener("load", () => {
     const saved = localStorage.getItem("fontSize");
 
     if (saved) {
-        document.documentElement.style.fontSize = saved + "px";
         slider.value = saved;
-        value.textContent = saved + "px";
+        applyFont(saved);
+    } else {
+        applyFont(slider.value);
     }
-};
+});
 </script>​​
 
 </body>​​
