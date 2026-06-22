@@ -484,8 +484,10 @@ body.light-theme #offline-screen .footer {
                     <button class="prev" onclick="plusSlides(-1)">❮</button>
                     <button class="next" onclick="plusSlides(1)">❯</button>
                 </div><br>
-            </div>
-
+            </div> <br>
+ <input type="range" min="12" max="30" value="16" id="fontSlider">
+<span id="fontValue">16px</span> <br>
+            
             <div class="card" id="form">
                 <p>Selamat datang! Belum mendaftar? Ayo daftar sekarang juga!</p>
                 <button class="btn" onclick="bukaForm()" style="font-size: 18px; padding: 15px;">DAFTAR SEKARANG</button>
@@ -1099,7 +1101,22 @@ function kembaliKeBeranda() {
     document.getElementById("main-content").style.display = "block";
     window.scrollTo(0, 0);
 }
+const slider = document.getElementById("fontSlider");
+const value = document.getElementById("fontValue");
 
+slider.addEventListener("input", function () {
+    const size = this.value;
+    document.body.style.fontSize = size + "px";
+    localStorage.setItem("fontSize", size);
+});
+window.onload = () => {
+    const saved = localStorage.getItem("fontSize");
+    if (saved) {
+        document.body.style.fontSize = saved + "px";
+        slider.value = saved;
+        value.textContent = saved + "px";
+    }
+};
 </script>​​
 
 </body>​​
