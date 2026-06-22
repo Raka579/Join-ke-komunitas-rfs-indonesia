@@ -743,11 +743,13 @@ function hideLoading() {
 }
 
 function showLoadingError() {
-    document.getElementById("loading-text").innerHTML = "CODE ERROR: 500 <br> Gagal memuat halaman, coba lagi nanti";
+    document.getElementById("loading-text").innerHTML = "❌ Gagal memuat halaman, coba lagi nanti";
     document.getElementById("loading-text").style.color = "#ff6b6b";
     document.querySelector(".loader").style.display = "none";
     document.getElementById("retry-btn").style.display = "block";
 }
+
+let GROUP_NAME_DYNAMIC = "GROUP PILOT RFS INDONESIA";
 
 Promise.all([
     fetch("group.json?ts=" + Date.now()).then(res => {
@@ -764,7 +766,8 @@ Promise.all([
 ])
 .then(([data]) => {
     GROUP_NAME_DYNAMIC = data.group_name;
-    document.querySelectorAll(".group-name").forEach(el => el.textContent = data.group_name);
+    document.querySelectorAll(".group-name")
+      .forEach(el => el.textContent = data.group_name);
     document.title = data.group_name;
     setTimeout(hideLoading, 500);
 })
@@ -772,25 +775,7 @@ Promise.all([
     console.error(err);
     showLoadingError();
 });
-
-let GROUP_NAME_DYNAMIC = "GROUP PILOT RFS INDONESIA"; 
-
-fetch("group.json?ts=" + Date.now())
-  .then(res => res.json())
-  .then(data => {
-    GROUP_NAME_DYNAMIC = data.group_name;
-    document.querySelectorAll(".group-name")
-      .forEach(el => el.textContent = data.group_name);
-    document.title = data.group_name;
-  })
-  .catch(err => {
-    console.warn("Gagal load group.json, pakai fallback", err);
-  });
-    const adminDB = {
-    A1: "NjI4ODI4NzIyNDU2Mg==",
-    A2: "NjI4NTM2NDMyODU4OQ==",
-    A3: "NjI4MzE0MDIyMjcxMQ=="
-};
+ 
 
     function toggleTheme() {
         document.body.classList.toggle("light-theme");
@@ -845,12 +830,7 @@ fetch("group.json?ts=" + Date.now())
         });
     }
 
-    function kembaliKeForm() {
-        document.getElementById("main-content").style.display = "block";
-        document.getElementById("step-preview").style.display = "none";
-        window.scrollTo(0, 0);
-    }
-
+    
     async function proses() {
     const errorDiv = document.getElementById("formError");
     errorDiv.innerHTML = ""; 
@@ -1028,17 +1008,20 @@ function tampilkanPeringatanSistem(pesan) {
         return;
     }
     localStorage.setItem("lastSubmitTime", now);
-    const keys = Object.keys(adminDB);
-    const adminID = keys[Math.floor(Math.random() * keys.length)];
-    const adminNumber = decodeAdmin(adminID);
-    window.open(
-        `https://wa.me/${adminNumber}?text=${pesanTerencode}`,
-        "_blank"
-    );
+    fetch("get_admin.php")
+  .then(res => res.json())
+  .then(data => {
+      window.open(
+          `https://wa.me/${data.admin}?text=${pesanTerencode}`,
+          "_blank"
+      );
+  })
+  .catch(err => {
+      console.error(err);
+      alert("Gagal mengambil nomor admin.");
+  });
 }
-function decodeAdmin(id) {
-    return atob(adminDB[id]);
-}
+
 function cekKoneksi() {
     const offlineScreen = document.getElementById("offline-screen");
     if (!offlineScreen) return; 
@@ -1103,11 +1086,19 @@ function bukaForm() {
 
 function kembaliKeForm() {
     document.getElementById("step-preview").style.display = "none";
+
     const formSection = document.getElementById("form-section");
     formSection.classList.remove("hidden");
     formSection.style.display = "block";
+
     document.getElementById("main-content").style.display = "block";
-    window.scrollTo(0, 0);
+
+    document.getElementById("formError").innerHTML = "";
+
+    window.scrollTo({
+        top: 0,
+        behavior: "smooth"
+    });
 }
 
 function kembaliKeBeranda() {
