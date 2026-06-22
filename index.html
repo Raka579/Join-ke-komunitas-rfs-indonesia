@@ -1009,19 +1009,22 @@ function tampilkanPeringatanSistem(pesan) {
     }
     localStorage.setItem("lastSubmitTime", now);
     fetch("get_admin.php")
-  .then(r => r.json())
+  .then(async r => {
+      console.log("STATUS:", r.status);
+      const text = await r.text();
+      console.log("RAW RESPONSE:", text);
+      return JSON.parse(text);
+  })
   .then(data => {
-      alert(JSON.stringify(data));
-      console.log(data);
-
+      console.log("ADMIN:", data);
       window.open(
           `https://wa.me/${data.admin}?text=${pesanTerencode}`,
           "_blank"
       );
   })
   .catch(err => {
-      console.error(err);
-      alert("Gagal mengambil nomor admin. Coba lagi nanti");
+      console.error("ERROR FETCH:", err);
+      alert("Gagal mengambil nomor admin. Cek console");
   });
 }
 
