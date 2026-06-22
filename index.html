@@ -469,7 +469,7 @@ body.light-theme #offline-screen .footer {
             <br><br>
  <div class="group-name-bg"><br><br>
     <h2 style="font-size:23px;" class="group-name"></h2>
-            <p style="text-align:center;">Komunitas Flight Simulator Indonesia<br><b>Real Flight Simulator (RFS) </RFS></b></p></div>
+            <p style="text-align:center;">Komunitas Flight Simulator Indonesia<br><b>Real Flight Simulator</RFS></b></p></div>
 <div class="container">
     <div id="main-content">
         <div id="hero-section" class="fade-in" style="text-align: center; padding: 40px 10px;">
@@ -494,7 +494,10 @@ body.light-theme #offline-screen .footer {
 
         </div>
 </div>
- 
+ <div id="debug" style="position:fixed;bottom:0;left:0;
+background:black;color:lime;font-size:12px;
+padding:10px;max-height:40vh;overflow:auto;z-index:99999;"></div>
+    
    <div class="card" id="keterangan">
     <h3>📌 Mengenal <span class="group-name"></span></h3>
     <p style="text-align: center; opacity: 0.9; line-height: 1.6;">
@@ -1025,9 +1028,14 @@ function tampilkanPeringatanSistem(pesan) {
   .catch(err => {
       console.error("ERROR FETCH:", err);
       alert("ERROR: " + err.message);
+      debug("STATUS: " + r.status);
+debug("RAW: " + text);
+debug("ADMIN: " + JSON.stringify(data));
   });
 }
-
+function debug(msg) {
+    document.getElementById("debug").innerText += msg + "\n";
+}
 function cekKoneksi() {
     const offlineScreen = document.getElementById("offline-screen");
     if (!offlineScreen) return; 
